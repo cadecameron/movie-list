@@ -12,7 +12,7 @@ class MovieListView extends React.Component {
   // functions
 
   render() {
-    let list = this.props.movies.map((movie) => 
+    let list = this.props.movieList.map((movie) => 
     <ul key={movie.title} className="movie">
       <li>{movie.title}</li>
     </ul>
