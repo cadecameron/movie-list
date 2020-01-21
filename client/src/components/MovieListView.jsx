@@ -1,4 +1,5 @@
 import React from 'react';
+import WatchedToggle from './WatchedToggle.jsx';
 
 class MovieListView extends React.Component {
   constructor(props) {
@@ -9,13 +10,21 @@ class MovieListView extends React.Component {
 
   // this bindings (if any)
 
-  // functions
 
   render() {
-    let list = this.props.movieList.map((movie) => 
-    <ul key={movie.title} className="movie">
-      <li>{movie.title}</li>
-    </ul>
+    let list = this.props.movieList.map((movie) =>
+      <li key={movie.title} className="collection-item avatar">
+        <img src={''/* TODO */} alt="" className="circle"></img>
+        <span className="title">{movie.title}</span>
+        <a href="#!"
+          className="secondary-content">
+          <WatchedToggle
+            watchedStatus={movie.watched}
+            title={movie.title}
+            handleWatchedClick={this.props.handleWatchedClick}
+          />
+        </a>
+      </li>
     );
 
     return (

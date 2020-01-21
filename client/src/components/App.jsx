@@ -9,17 +9,24 @@ class App extends React.Component {
 
     this.state = {
       movies: [
-        // { title: 'Mean Girls' },
-        // { title: 'Hackers' },
-        // { title: 'The Grey' },
-        // { title: 'Sunshine' },
-        // { title: 'Ex Machina' },
+        // {title: '',
+        //  watched: false, // 
+        //  ...}
+
+        { title: 'Mean Girls' },
+        { title: 'Hackers' },
+        { title: 'The Grey' },
+        { title: 'Sunshine' },
+        { title: 'Ex Machina' },
       ],
-      searchFilter: ''
+      searchFilter: '',
+      watchedFilter: undefined // undefined = filter not active, true = active; only watched, false = active; only not watched
     }
 
     this.handleOKClick = this.handleOKClick.bind(this);
     this.handleAddClick = this.handleAddClick.bind(this);
+    this.processFilters = this.processFilters.bind(this);
+    this.handleWatchedClick = this.handleWatchedClick.bind(this);
   }
 
   handleOKClick(newSearchTerm) {
@@ -30,22 +37,54 @@ class App extends React.Component {
 
   handleAddClick(newTitle) {
     let movies = this.state.movies.slice();
-    movies.push({title: newTitle, watched: false});
+    movies.push({ title: newTitle, watched: false });
     this.setState({
       movies
     });
   }
 
+
+  // Toggle the state of the watched toggle on movie that was clicked on
+  handleWatchedClick(e) {
+    let movies = [...this.state.movies];
+    let title = e.target.id;
+
+    movies.forEach((movie) => {
+      movie.title === title ? movie.watched = !movie.watched : null
+    });
+
+    this.setState({
+      movies
+    });
+    console.log(`Watched status triggered for ${title} to ${e.target.checked}`);
+  }
+
+  // Function to create an array from the current movie list based on filtered properties in the list
+  processFilters() {
+    let movieList = [...this.state.movies];
+    let searchFilter = this.state.searchFilter;
+    let watchedFilter = this.state.watchedFilter;
+
+    // Search field filter
+    if (searchFilter !== '') {
+      movieList = movieList.filter(movie => movie.title.toUpperCase().includes(searchFilter.toUpperCase()));
+    }
+
+    // Watched toggle filter
+    if (watchedFilter) {
+      movieList = movieList.filter(movie => (!watchedFilter) || (movie.watched === watchedFilter));
+    }
+
+    if (movieList.length === 0) {
+      return null;
+    }
+
+    return movieList;
+  }
+
   render() {
     // compose array to store filtered list, if a search term is present
-    let movieList = [];
-    let searchFilter = this.state.searchFilter;
-    if (searchFilter !== '') {
-      movieList = this.state.movies.filter(movie => movie.title.toUpperCase().includes(searchFilter.toUpperCase()));
-      movieList.length > 0 ? movieList : movieList = [{title: 'No movies to display!'}];
-    } else {
-      movieList = this.state.movies;
-    }
+    let movieList = this.processFilters();
 
     return (
       <div>
@@ -54,12 +93,25 @@ class App extends React.Component {
             MovieList
           </h1>
         </div>
-        <AddMovie handleAddClick={this.handleAddClick}/>
+        <AddMovie handleAddClick={this.handleAddClick} />
         <br />
         <Search handleOKClick={this.handleOKClick} />
-        <div className="container">
-          <MovieListView movieList={movieList ? movieList : null} />
+        <br />
+        <div className="">
+          <ul className="tabs s3">
+            <li className="tab"><a data="true" href="#" onClick={(e)=>console.log(e)}>Watched</a></li>
+            <li className="tab"><a href="#" onClick="">Unwatched</a></li>
+          </ul>
         </div>
+
+        {
+          movieList ?
+            <ul className="collection">
+              <MovieListView movieList={movieList} handleWatchedClick={this.handleWatchedClick} />
+            </ul>
+            : <div>No movies to display!</div>
+        }
+
       </div>
     );
   }
