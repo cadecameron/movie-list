@@ -1,6 +1,7 @@
 import React from 'react';
 import MovieListView from './MovieListView.jsx';
-import Search from './Search';
+import Search from './Search.jsx';
+import AddMovie from './AddMovie.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -8,21 +9,30 @@ class App extends React.Component {
 
     this.state = {
       movies: [
-        { title: 'Mean Girls' },
-        { title: 'Hackers' },
-        { title: 'The Grey' },
-        { title: 'Sunshine' },
-        { title: 'Ex Machina' },
+        // { title: 'Mean Girls' },
+        // { title: 'Hackers' },
+        // { title: 'The Grey' },
+        // { title: 'Sunshine' },
+        // { title: 'Ex Machina' },
       ],
       searchFilter: ''
     }
 
     this.handleOKClick = this.handleOKClick.bind(this);
+    this.handleAddClick = this.handleAddClick.bind(this);
   }
 
   handleOKClick(newSearchTerm) {
     this.setState({
       searchFilter: newSearchTerm
+    });
+  }
+
+  handleAddClick(newTitle) {
+    let movies = this.state.movies.slice();
+    movies.push({title: newTitle});
+    this.setState({
+      movies
     });
   }
 
@@ -44,6 +54,8 @@ class App extends React.Component {
             MovieList
           </h1>
         </div>
+        <AddMovie handleAddClick={this.handleAddClick}/>
+        <br />
         <Search handleOKClick={this.handleOKClick} />
         <div className="container">
           <MovieListView movieList={movieList ? movieList : null} />
