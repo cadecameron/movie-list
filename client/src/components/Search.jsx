@@ -1,7 +1,8 @@
 import React from 'react';
+// import Button from '@material-ui/core/Button';
 
 class Search extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -9,7 +10,7 @@ class Search extends React.Component {
     }
 
     this.onSearchChange = this.onSearchChange.bind(this);
-    
+
   }
 
   onSearchChange(event) {
@@ -23,7 +24,8 @@ class Search extends React.Component {
     return (
       <div>
         <input type="text" placeholder="Enter search term..." onChange={this.onSearchChange}></input>
-        <button onClick={() => this.props.handleOKClick(this.state.searchTerm)}>Go!</button>
+        {/* <Button variant="contained" color="primary" onClick={() => this.props.handleOKClick(this.state.searchTerm)}>Go!</Button> */}
+        <button className="btn" onClick={() => this.props.handleOKClick(this.state.searchTerm)}>Go!</button>
       </div>
     )
   }

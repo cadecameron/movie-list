@@ -30,7 +30,7 @@ class App extends React.Component {
 
   handleAddClick(newTitle) {
     let movies = this.state.movies.slice();
-    movies.push({title: newTitle});
+    movies.push({title: newTitle, watched: false});
     this.setState({
       movies
     });
